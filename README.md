@@ -1,6 +1,6 @@
 # Ex-04-Multivariate-Analysis
 ## AIM
-To perform Multivariate EDA on the given data set.
+To perform Multivariate Exploratory Data Analysis on the given data set.
 
 ## EXPLANATION
 Exploratory data analysis is used to understand the messages within a dataset. This technique involves many iterative processes to ensure that the cleaned data is further sorted to better understand the useful meaning.The primary aim with exploratory analysis is to examine the data for distribution, outliers and anomalies to direct specific testing of your hypothesis.
@@ -35,70 +35,98 @@ Save the final data set into the file
 Developed by: Shafeeq Ahamed.S
 Registration Number: 212221230092
 ```
-```
-**Multivariate EDA - SuperStore.csv**
+```python
 import pandas as pd
 import numpy as np
-import seaborn as sbn
+import seaborn as sns
 import matplotlib.pyplot as plt
-df = pd.read_csv("SuperStore.csv")
-df.head(10)
+
+df = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/Semester 3/19AI403 _Intro to DS/Exp_3/SuperStore.csv")
+df
+
+df.head()
+
 df.info()
+
 df.describe()
+
+df.tail()
+
+df.shape
+
+df.columns
+
 df.isnull().sum()
-df['Postal Code'] = df["Postal Code"].fillna(df['Postal Code'].mode()[0])
+
+df.duplicated()
+
+df['Postal Code'] = df['Postal Code'].fillna(df['Postal Code'].mode()[0])
+
 df.isnull().sum()
-df.dtypes
-sbn.scatterplot(df['Postal Code'],df['Sales'])
+
 states=df.loc[:,["State","Sales"]]
 states=states.groupby(by=["State"]).sum().sort_values(by="Sales")
 plt.figure(figsize=(17,7))
-sbn.barplot(x=states.index,y="Sales",data=states)
+sns.barplot(x=states.index,y="Sales",data=states)
 plt.xticks(rotation = 90)
 plt.xlabel=("STATES")
 plt.ylabel=("SALES")
 plt.show()
-states=df.loc[:,["State","Postal Code"]]
-states=states.groupby(by=["State"]).sum().sort_values(by="Postal Code")
-plt.figure(figsize=(17,7))
-sbn.barplot(x=states.index,y="Postal Code",data=states)
-plt.xticks(rotation = 90)
-plt.xlabel=("STATES")
-plt.ylabel=("Postal Code")
-plt.show()
+
 states=df.loc[:,["Segment","Sales"]]
-states=states.groupby(by=["Segment"]).sum().sort_values(by="Sales")
-#plt.figure(figsize=(10,7))
-sbn.barplot(x=states.index,y="Sales",data=states)
+states=df.groupby(by=["Segment"]).sum()
+sns.barplot(x=states.index,y="Sales",data=states)
 plt.xticks(rotation = 90)
 plt.xlabel=("SEGMENT")
 plt.ylabel=("SALES")
 plt.show()
-sbn.barplot(df['Postal Code'],df['Ship Mode'],hue=df['Region'])
+
+sns.barplot(df["Ship Mode"],df["Sales"],hue=df["Category"])
+
 df.corr()
-sbn.heatmap(df.corr(),annot=True)
+sns.heatmap(df.corr(),annot=True)
+
+plt.figure(figsize=(10,7))
+sns.scatterplot(df['Sub-Category'], df['Sales'], hue=df['Ship Mode'])
+plt.xticks(rotation = 90)
 ```
 # OUTPUT
-## EDA - SuperStore.csv
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/1.png?raw=true)
-## Displaying information about Dataset
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/2.png?raw=true)
-
-## Checking the null values and Cleaning it
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/3.png?raw=true)
-
-## Displaying datatypes of each features
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/4.png?raw=true)
-
-## Multivariate Analysis - Scatterplot
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/5.png?raw=true)
-
-## Multivariate Analysis - Barplot
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/6.png?raw=true)
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/7.png?raw=true)
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/8.1.png?raw=true)
-## Correlation Coefficient Interpretation using HeatMap
-![output](https://github.com/RuchithaReddy28/Ex-04-Multivariate-Analysis/blob/main/9.png?raw=true)
+## Dataset
+![dataset](./out/df.png)
+## Dataset Head
+![dataset head](./out/head.png)
+## Dataset Info
+![dataset info](./out/info.png)
+## Dataset Describe
+![dataset describe](./out/describe.png)
+## Dataset Tail
+![dataset tail](./out/tail.png)
+## Dataset Shape
+![dataset shape](./out/shape.png)
+## Dataset Columns
+![dataset columns](./out/columns.png)
+## Null Values - Pre Cleaning
+![null values](./out/pre_null.png)
+## Dataset Duplicated
+![dataset describe](./out/duplicate.png)
+## Null Values - Post Cleaning
+![null values](./out/post_null.png)
+## Multivariate Analysis - State
+![category](./out/state.png)
+## Multivariate Analysis - Segment
+![region](./out/segment.png)
+## Multivariate Analysis - Ship Mode & Category vs Sales
+![city](./out/ship.png)
+## Multivariate Analysis - Heat Map
+![date](./out/heatmap.png)
+## Multivariate Analysis - Sub-Category & Ship Mode vs Sales
+![segment](./out/sub.png)
 
 ## RESULT
-Thus the program to perform EDA on the given data set is successfully executed.
+The given dataset is read and Multivariate analysis is performed. The inferences are:
+
+1. Most sales were from the California State
+2. Most sales were from Consumer Segment
+3. Most sales were from "New York City"
+4. Most Sales were shipped on the Same Day and is most from Technology
+5. Highest sale was from Machines Sub-category and is shipped in standard class
